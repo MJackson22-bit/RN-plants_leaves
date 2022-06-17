@@ -5,7 +5,7 @@ import re
 import numpy as np
 from PIL import Image
 
-dirname = os.path.join(os.getcwd(), 'plants_leaves')
+dirname = os.path.join(os.getcwd(), 'plants')
 
 img_path = dirname + os.sep
 images = []
@@ -14,13 +14,17 @@ labels = []
 
 categorias = os.listdir(dirname)
 x=0
+i=0
 for direcotrio in categorias:
     print(direcotrio)
     for imagen in os.listdir(dirname + '/' + direcotrio):
         img = Image.open(dirname + '/' + direcotrio + '/' + imagen).resize((200,200))
+        if i == 19:
+            path = img
         img = np.array(img)
         images.append(img)
         labels.append(x)
+        i += 1
     x += 1
 
 images = np.asanyarray(images)
@@ -43,10 +47,10 @@ model = tf.keras.models.Sequential([
 ])
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 labels = np.asarray(labels)
-model.fit(images, labels, epochs=100)
+model.fit(images, labels, epochs=1000)
 
 im=0
-im = Image.open('C:\\Users\\Jackson\\Documents\\IA - Reconocimiento de imágenes\\plants_leaves\\healthy\\0006_0008.JPG').resize((200,200))
+im = Image.open('C:\\Users\\Jackson\\Documents\\IA - Reconocimiento de imágenes\\RN-plants_leaves\plants\\Roselinia\\IMG 36.JPG').resize((200,200))
 im = np.asarray(im)
 im = im[:,:,0]
 im = np.array([im])
